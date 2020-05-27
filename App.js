@@ -1,17 +1,65 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-
-const instructions = Platform.select({
-  ios: `Press Cmd+R to reload,\nCmd+D or shake for dev menu`,
-  android: `Double tap R on your keyboard to reload,\nShake or press menu button for dev menu`,
-});
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import { PaymentsStripe as stripe } from 'expo-payments-stripe';
 
 export default function App() {
+  const [product, setproduct] = useState({
+    amount: 100,
+    productName: 'Coffee',
+    customerName: 'John',
+    customerEmail: 'John@doe.com',
+  });
+
+  React.useEffect(() => {
+    stripe.setOptionsAsync({
+      publishableKey: 'pk_test_5k46Yz1BbQw48FbrnqPhvDpW00wDV72QeN',
+    });
+  });
+  async function pay() {
+    const token = await stripe.paymentRequestWithCardFormAsync();
+    console.log(token);
+
+    const apiURL = 'http://localhost:8282/pay';
+
+    const body = {
+      token,
+      product,
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    return fetch(apiURL, {
+      method: 'post',
+      headers,
+      body: JSON.stringify(body),
+    })
+      .then()
+      .catch((error) => alert(error));
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome to React Native!</Text>
-      <Text style={styles.instructions}>To get started, edit App.js</Text>
-      <Text style={styles.instructions}>{instructions}</Text>
+      <Image
+        source={{
+          uri:
+            'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+          height: 256,
+          width: 256,
+        }}
+        style={{ borderRadius: 8 }}
+      />
+      <TouchableOpacity onPress={pay}>
+        <View style={styles.button}>
+          <Text style={{ color: 'white' }}>Pay me 1 dollah</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -23,14 +71,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  button: {
+    backgroundColor: 'orange',
+    padding: 20,
+    marginTop: 20,
+    borderRadius: 8,
   },
 });
