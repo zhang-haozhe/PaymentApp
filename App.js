@@ -26,7 +26,7 @@ export default function App() {
     const token = await stripe.paymentRequestWithCardFormAsync();
     console.log(token);
 
-    const apiURL = 'http://localhost:8282/pay';
+    const apiURL = 'https://35.184.70.253:8282/pay';
 
     const body = {
       token,
