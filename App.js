@@ -10,7 +10,7 @@ import {
 import { PaymentsStripe as stripe } from 'expo-payments-stripe';
 
 export default function App() {
-  const [product, setproduct] = useState({
+  const [product, setproduct] = React.useState({
     amount: 100,
     productName: 'Coffee',
     customerName: 'John',
