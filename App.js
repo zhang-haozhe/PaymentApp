@@ -21,7 +21,7 @@ export default function App() {
 
   React.useEffect(() => {
     stripe.setOptionsAsync({
-      publishableKey: 'pk_test_5k46Yz1BbQw48FbrnqPhvDpW00wDV72QeN',
+      publishableKey: '',
     });
   });
 
