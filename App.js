@@ -6,9 +6,11 @@ import {
   View,
   Image,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import { PaymentsStripe as stripe } from 'expo-payments-stripe';
 
+const axios = require('axios');
 export default function App() {
   const [product, setproduct] = React.useState({
     amount: 100,
@@ -22,15 +24,25 @@ export default function App() {
       publishableKey: 'pk_test_5k46Yz1BbQw48FbrnqPhvDpW00wDV72QeN',
     });
   });
+
+  async function test() {
+    try {
+      const response = await axios.get('http://35.224.196.84:8080/test');
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   async function pay() {
     const token = await stripe.paymentRequestWithCardFormAsync();
     console.log(token);
 
-    const apiURL = 'https://35.184.70.253:8282/pay';
+    const apiURL = 'http://10.0.2.2:8080/pay';
 
     const body = {
       token,
       product,
+      // str: 'hello world',
     };
 
     const headers = {
@@ -41,8 +53,10 @@ export default function App() {
       headers,
       body: JSON.stringify(body),
     })
-      .then()
-      .catch((error) => alert(error));
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => console.log(error));
   }
   return (
     <View style={styles.container}>

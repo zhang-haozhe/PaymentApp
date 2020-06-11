@@ -8,7 +8,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "expo": "~37.0.3",
+    "expo-payments-stripe": "~8.0.0",
     "expo-splash-screen": "^0.2.3",
     "expo-updates": "~0.2.0",
     "react": "~16.9.0",
